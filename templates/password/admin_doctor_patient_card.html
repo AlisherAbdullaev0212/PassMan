@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      margin: auto;
+      text-align: center;
+      font-family: arial;
+    }
+
+    .title {
+      text-align: center;
+      color: grey;
+      font-size: 18px;
+      margin-top: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    button {
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 8px;
+      color: white;
+      background-color: #000;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }
+
+    button:hover,
+    a:hover {
+      opacity: 0.7;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      justify-content: center;
+      z-index: 1;
+      margin: 120px auto 120px auto;
+    }
+
+    .grid-item {
+      width: 300px; 
+      height: 225px; 
+      border: 1px solid #ccc;
+      margin: 100px 100px;
+    }
+   
+    a:link {
+      text-decoration: none;
+    }
+
+    a {
+      color: white;
+    }
+    .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place video behind other content */
+            overflow: hidden;
+        }
+        .video-background video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover; /* Ensure video covers entire background */
+        }
+  </style>
+</head>
+
+<body>
+ <!-- Video background element -->
+ <div class="video-background">
+  <video autoplay loop muted>
+      <source src="/static/images/back.mp4" type="video/mp4">
+      <!-- Add additional <source> elements for other video formats if needed -->
+      Your browser does not support the video tag.
+  </video>
+</div>
+
+
+  <div class="grid-container">
+    <div class="grid-item">
+      <div class="card">
+        <img src="{% static "images/admin.png" %}" alt="admin">
+        <div style="border-bottom: 1px solid #000;"></div>
+        <p class="title">ADMIN</p>
+        <p><a href="../adminclick"><button>View</button></a></p>
+      </div>
+
+    </div>
+    <div class="grid-item">
+      <div class="card">
+        <img src="{% static "images/manager.png" %}" alt="manager" style="scale: 0.9;">
+        <div style="border-bottom: 1px solid #000;"></div>
+        <p class="title">Manager</p>
+        <p><a href="../managerclick"><button>View</button></a></p>
+      </div>
+
+    </div>
+    <div class="grid-item">
+      <div class="card">
+        <img src="{% static "images/user.png" %}" alt="user">
+        <div style="border-bottom: 1px solid #000;"></div>
+        <p class="title">User</p>
+        <p><a href="../userclick"><button>View</button></a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

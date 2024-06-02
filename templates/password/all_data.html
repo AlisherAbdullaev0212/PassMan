@@ -1,0 +1,122 @@
+{% extends 'password/patient_base.html' %}
+
+{% block content %}
+{% load static %}
+
+<head>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="//d.bablic.com/snippet/6288d4c3c4c5800001a91242.js?version=3.9"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+    
+
+  </style>
+</head>
+
+<body>
+  <section class="vh-75" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div style="margin: 0px;" class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-9 col-xl-7">
+          <div class="card rounded-3">
+            <div class="card-body p-4">
+              <h4 class="text-center my-1 pb-1" style="text-transform: uppercase;">Credentials</h4>
+              <form method="POST" style="margin-top: 0;" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                {% csrf_token %}
+                <div class="col-12">
+                  <div class="form-outline">
+                    <input type="text" id="form1" class="form-control" name="task" placeholder="Enter an email here"/>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-outline">
+                    <input type="input" id="form2" class="form-control" name="password" placeholder="Password to manage"/>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <select class="form-select" name="icon" id="icon-select">
+                    <option value="" selected>Select Icon</option>
+                    <option value="github">GitHub</option>
+                    <option value="facebook" data-image="/static/images/adilet1.jpg">Facebook</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="telegram">Telegram</option>
+                    <option value="gmail">Gmail</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="vkontakte">VKontakte</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="paytm">Paytm</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="reddit">Reddit</option>
+                    <option value="amazon">Amazon</option>
+                    <option value="appleicloud">Apple iCloud</option>
+                    <option value="canva">Canva</option>
+                    <option value="discord">Discord</option>
+                    <option value="microsoft">Microsoft</option>
+                    <option value="outlook">Outlook</option>
+                    <option value="quora">Quora</option>
+                    <option value="snapchat">Snapchat</option>
+                    <option value="udemy">Udemy</option>
+                    <option value="yahoo">Yahoo</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary">Add To</button>
+                </div>
+              </form>
+              <table class="table mb-4">
+                <thead>
+                  <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Social</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in todos %}
+                  <tr>
+                    <td>{{ i.todo_name }}</td>
+                    <td>{{ i.password }}</td>
+                    <td>
+                      {% if i.icon %}
+                      <p> <i class="fab fa-{{ i.icon }}"></i> {{ i.icon }}</p>
+                      {% else %}
+                        No icon
+                      {% endif %}
+                    </td>
+                    {% if i.status %}
+                      <td>Deleted</td>
+                    {% else %}
+                      <td>Active</td>
+                    {% endif %}
+                    <td>
+                      <a href="{% url 'delete' i.todo_name %}"><button type="submit" class="btn btn-danger">Remove</button></a>
+                      <a href="{% url 'update' i.todo_name %}"><button type="submit" class="btn btn-success ms-1">Deleted</button></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+{% endblock content %}

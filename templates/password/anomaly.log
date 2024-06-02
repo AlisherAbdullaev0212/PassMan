@@ -1,0 +1,11 @@
+Found the following anomalies:
+Anomaly 1:
+Index: 0
+Point: [1.2, 3.5]
+Distance to cluster centroid 1: 0.7
+
+Anomaly 2:
+Index: 2
+Point: [5.0, 6.5]
+Distance to cluster centroid 0: 1.2
+

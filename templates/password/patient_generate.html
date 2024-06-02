@@ -1,0 +1,202 @@
+{% extends 'password/patient_base.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+
+    #container {
+      text-align: center;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    label,
+    input[type="checkbox"] {
+      margin: 10px;
+    }
+
+    #password {
+      width: 300px;
+      padding: 10px;
+      font-size: 18px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .copy-button {
+      background-color: #28a745;
+      margin-top: 10px;
+    }
+
+    .copy-button:hover {
+      background-color: #218838;
+    }
+
+    .password-strength {
+      margin-top: 20px;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    function generatePassword() {
+      const length = document.getElementById("length").value;
+      const uppercase = document.getElementById("uppercase").checked;
+      const lowercase = document.getElementById("lowercase").checked;
+      const numbers = document.getElementById("numbers").checked;
+      const symbols = document.getElementById("symbols").checked;
+
+      let charset = "";
+      if (uppercase) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      if (lowercase) charset += "abcdefghijklmnopqrstuvwxyz";
+      if (numbers) charset += "0123456789";
+      if (symbols) charset += "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+      document.getElementById("password").value = password;
+      showPasswordStrength(password);
+    }
+
+    function copyPassword() {
+      const passwordField = document.getElementById("password");
+      passwordField.select();
+      document.execCommand("copy");
+
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+      swalWithBootstrapButtons.fire({
+        title: "Do you want to save in clipboard?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, save!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire({
+            title: "Saved!",
+            text: "Your password saved in the clipboard :(",
+            icon: "success"
+          });
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Your password didn't saved in the clipboard :)",
+            icon: "error"
+          });
+        }
+      });
+    }
+
+    function showPasswordStrength(password) {
+      // Пример алгоритма оценки сложности пароля
+      let strength = 0;
+      if (password.match(/[a-z]+/)) {
+        strength += 1;
+      }
+      if (password.match(/[A-Z]+/)) {
+        strength += 1;
+      }
+      if (password.match(/[0-9]+/)) {
+        strength += 1;
+      }
+      if (password.match(/[!@#$%^&*()_+{}|:<>?~-]+/)) {
+        strength += 1;
+      }
+
+      let strengthText = "";
+      if (strength === 0) {
+        strengthText = "Very Weak";
+      } else if (strength === 1) {
+        strengthText = "Weak";
+      } else if (strength === 2) {
+        strengthText = "Moderate";
+      } else if (strength === 3) {
+        strengthText = "Strong";
+      } else if (strength === 4) {
+        strengthText = "Very Strong";
+      }
+
+      document.getElementById("password-strength").innerText = "Password Complexity: " + strengthText;
+    }
+  </script>
+</head>
+<div id="container">
+  <h1>Password Generator</h1>
+  <label for="length">Length:</label>
+  <input type="number" id="length" min="6" max="20" value="12">
+  <br>
+  <input type="checkbox" id="uppercase" checked>
+  <label for="uppercase">Uppercase letters</label>
+  <br>
+  <input type="checkbox" id="lowercase" checked>
+  <label for="lowercase">Lowercase letters</label>
+  <br>
+  <input type="checkbox" id="numbers" checked>
+  <label for="numbers">Numbers</label>
+  <br>
+  <input type="checkbox" id="symbols" checked>
+  <label for="symbols">Symbols</label>
+  <br>
+  <input style="text-align: center;" type="text" id="password" readonly>
+  <br>
+  <button onclick="generatePassword()">Generate Password</button>
+  <button class="copy-button" onclick="copyPassword()">Copy Password</button>
+  <div class="password-strength" id="password-strength"></div>
+</div>
+
+<!-- Modal -->
+<div id="copyModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <p>Password Copied!</p>
+  </div>
+</div>
+{% endblock content %}
